@@ -1,15 +1,16 @@
 import openai
 import os
-from chave import apikey
 import streamlit as st
 from streamlit_chat import message
 from langchain.llms import OpenAI 
 from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import TextLoader
 from langchain.indexes import VectorstoreIndexCreator
+import tiktoken
+
 
 # Define a chave da API OpenAI
-os.environ['OPENAI_API_KEY'] = apikey
+os.environ['OPENAI_API_KEY'] = os.environ.get("OPENAI_API_KEY")
 llm = OpenAI()
 # Cria um carregador de texto com o caminho do arquivo e a codificação
 loader = TextLoader('C:/Users/john/Documents/ESTUDO/Project/chat_data_cleaned.txt', encoding = 'utf-8')
@@ -34,6 +35,7 @@ if "messages" in st.session_state:
 
 # Se o usuário inseriu uma mensagem e a chave da API OpenAI está definida
 if user_input:
+    # Se o usuário inseriu "clear" limpa as mensagens
     if user_input == 'clear':
         st.session_state["messages"] = []
     else:
